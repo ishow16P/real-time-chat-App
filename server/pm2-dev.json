@@ -1,0 +1,32 @@
+{
+  "apps": [
+    {
+      "exec_mode": "fork",
+      "instances": 1,
+      "script": "index.js",
+      "name": "WEB_CHAT_API",
+      "interpreter": "node",
+      "watch": [
+        "models",
+        "middleware",
+        "controllers",
+        "routes",
+        "services",
+        "pm2-dev.json"
+      ],
+      "env": {
+        "service": {
+            "mongodb": {
+                "local": {
+                  "conn_type": "mongodb",
+                  "ip": "localhost",
+                  "port": "27017",
+                  "path": "/chatapp-db?retryWrites=true&w=majority"
+                }
+              }
+        },
+        "PORT": 8900
+      }
+    }
+  ]
+}
