@@ -1,2 +1,2 @@
-# real-time-chat-App
+# Real-Time-Chat-App
 React Node and MongoDB
