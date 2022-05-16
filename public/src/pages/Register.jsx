@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import styled from "styled-components";
 import Logo from "../assets/favicon.ico";
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios";
 import { registerRoute } from "../utils/APIRoutes";
+
 export const Register = () => {
+    const navigate = useNavigate();
     const [values,setValues] = useState({
         username: "",
         email: "",
@@ -20,15 +22,29 @@ export const Register = () => {
         draggable: true,
         theme: "dark",
     }
+    useEffect(()=>{
+      if(localStorage.getItem('chat-app-user')) {
+        navigate('/')
+      }
+    },[])
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(handleValidation()){
-        const {password, confirmPassword, username, email} = values; 
+        const {password, username, email} = values; 
         const { data } = await axios.post(registerRoute,{
             username,
             email,
             password,
-        })
+        }).catch((error) => {
+          console.log(error);
+          toast.error(error.response.data.RESULT_MESSAGE, toastOption)
+      })
+      console.log(data);
+        if(data.RESULT_CODE === '20100'){
+          localStorage.setItem('chat-app-user',JSON.stringify(data.user));
+          navigate("/");
+        }
+        
     }
   };
 
